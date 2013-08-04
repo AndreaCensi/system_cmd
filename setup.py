@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = "1.1"
+version = "1.1.2"
 
 description = """My wrappers for subprocess.POpen""" 
 
@@ -10,7 +10,7 @@ def read(fname):
     
 long_description = read('README.md')
     
-setup(name='system_cmd',
+setup(name='SystemCmd',
       author="Andrea Censi",
       author_email="andrea@cds.caltech.edu",
       url='http://github.com/AndreaCensi/system_cmd',
