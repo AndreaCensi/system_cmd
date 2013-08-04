@@ -1,4 +1,4 @@
-__version__ = '1.0dev1'
+__version__ = '1.1'
 
 from .meat import *
 from .interface import *
