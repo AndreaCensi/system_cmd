@@ -1,5 +1,5 @@
 from .structures import CmdException, CmdResult
-from .utils import cmd2args
+from .utils import cmd2args, indent
 import subprocess
 import sys
 import tempfile
@@ -15,7 +15,8 @@ def system_cmd_result(cwd, cmd,
                       raise_on_error=False,
                       display_prefix=None,
                       write_stdin='',
-                      capture_keyboard_interrupt=False):  # @UnusedVariable
+                      capture_keyboard_interrupt=False,
+                      display_stream=sys.stderr):  # @UnusedVariable
     ''' 
         Returns the structure CmdResult; raises CmdException.
         Also OSError are captured.
@@ -34,26 +35,34 @@ def system_cmd_result(cwd, cmd,
     interrupted = False
 
     try:
-        stdout = None if display_stdout else tmp_stdout.fileno()
-        stderr = None if display_stderr else tmp_stderr.fileno()
+        #stdout = None if display_stdout else 
+        stdout = tmp_stdout.fileno()
+#        stderr = None if display_stderr else 
+        stderr = tmp_stderr.fileno()
         p = subprocess.Popen(
                 cmd2args(cmd),
                 stdin=subprocess.PIPE,
                 stdout=stdout,
                 stderr=stderr,
+                bufsize=0,
                 cwd=cwd)
 
         if write_stdin != '':
             p.stdin.write(write_stdin)
             p.stdin.flush()
+
         p.stdin.close()
         p.wait()
         ret = p.returncode
         rets = None
         interrupted = False
+
     except KeyboardInterrupt:
-        ret = 100
-        interrupted = True
+        if capture_keyboard_interrupt:
+            ret = 100
+            interrupted = True
+        else:
+            raise 
     except OSError as e:
         interrupted = False
         ret = 200
@@ -64,9 +73,19 @@ def system_cmd_result(cwd, cmd,
         os.lseek(f.fileno(), 0, 0)
         return f.read().strip()
 
+    captured_stdout = read_all(tmp_stdout)
+    captured_stderr = read_all(tmp_stderr)
+
+    if display_stdout and captured_stdout:
+        display_stream.write(indent(captured_stdout,'stderr>'))
+
+    if display_stderr and captured_stderr:
+        display_stream.write(indent(captured_stderr,'stdout>'))
+
+
     res = CmdResult(cwd, cmd, ret, rets, interrupted,
-                    stdout=read_all(tmp_stdout),
-                    stderr=read_all(tmp_stderr))
+                    stdout=captured_stdout,
+                    stderr=captured_stderr)
 
     if raise_on_error:
         if res.ret != 0:

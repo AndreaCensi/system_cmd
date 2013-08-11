@@ -44,5 +44,7 @@ class CmdResult(object):
     
 class CmdException(Exception):
     def __init__(self, cmd_result):
-        Exception.__init__(self, cmd_result.format())
+        Exception.__init__(self, str(cmd_result))
         self.res = cmd_result
+
+        
