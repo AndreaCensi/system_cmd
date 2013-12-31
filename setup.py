@@ -1,22 +1,21 @@
 from setuptools import setup, find_packages
 import os
 
-version = "1.1.3"
-
-description = """My wrappers for subprocess.POpen""" 
+version = "1.1.7"
 
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
-    
-long_description = read('README.md')
+    try:
+      return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    except IOError:
+      return ""
     
 setup(name='SystemCmd',
       author="Andrea Censi",
-      author_email="andrea@cds.caltech.edu",
+      author_email="censi@mit.edu",
       url='http://github.com/AndreaCensi/system_cmd',
       
-      description=description,
-      long_description=long_description,
+      description="""My wrappers for subprocess.POpen""" ,
+      long_description=read('README.rst'),
       keywords="",
       license="",
       
