@@ -1,6 +1,10 @@
 from .meat import system_cmd_result
 
-__all__ = ['system_cmd_show', 'system_cmd', 'system_run']
+__all__ = [
+    'system_cmd_show', 
+    'system_cmd', 
+    'system_run',
+]
 
 def system_cmd_show(cwd, cmd): 
     ''' Display command, raise exception. '''
