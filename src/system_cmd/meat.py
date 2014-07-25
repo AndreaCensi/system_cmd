@@ -4,7 +4,6 @@ import subprocess
 import sys
 import tempfile
 import os
-import warnings
 
 
 __all__ = ['system_cmd_result']
@@ -13,7 +12,7 @@ def system_cmd_result(cwd, cmd,
                       display_stdout=False,
                       display_stderr=False,
                       raise_on_error=False,
-                      display_prefix=None,
+                      
                       write_stdin='',
                       capture_keyboard_interrupt=False,
                       display_stream=sys.stderr):  # @UnusedVariable
@@ -24,9 +23,7 @@ def system_cmd_result(cwd, cmd,
         
         :param write_stdin: A string to write to the process.
     '''
-    # if display_prefix is not None:
-        # warnings.warn('call with display_prefix')
-        
+
     tmp_stdout = tempfile.TemporaryFile()
     tmp_stderr = tempfile.TemporaryFile()
 
