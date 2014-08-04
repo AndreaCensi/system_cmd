@@ -12,7 +12,7 @@ def system_cmd_result(cwd, cmd,
                       display_stdout=False,
                       display_stderr=False,
                       raise_on_error=False,
-                      
+                      display_prefix=None, # leave it there
                       write_stdin='',
                       capture_keyboard_interrupt=False,
                       display_stream=sys.stderr):  # @UnusedVariable
