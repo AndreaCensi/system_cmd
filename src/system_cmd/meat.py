@@ -1,5 +1,6 @@
 from .structures import CmdException, CmdResult
 from .utils import cmd2args, indent
+from contracts import contract
 import subprocess
 import sys
 import tempfile
@@ -12,7 +13,7 @@ __all__ = ['system_cmd_result']
 class Shared():
     p = None
      
-def on_sigterm():
+def on_sigterm(a,b):
     print('SIGTERM caught --- terminating child process')
     Shared.p.terminate()
     #os.kill(Shared.p.pid, signal.SIGKILL)
@@ -21,6 +22,7 @@ def set_term_function(process):
     Shared.p = process
     signal.signal(signal.SIGTERM, on_sigterm)
 
+@contract(cwd='str', cmd='str|list(str)')
 def system_cmd_result(cwd, cmd,
                       display_stdout=False,
                       display_stderr=False,
@@ -49,8 +51,12 @@ def system_cmd_result(cwd, cmd,
         stdout = tmp_stdout.fileno()
         # stderr = None if display_stderr else 
         stderr = tmp_stderr.fileno()
+        if isinstance(cmd, str):
+            cmd = cmd2args(cmd)
+        else:
+            assert isinstance(cmd, list)
         p = subprocess.Popen(
-                cmd2args(cmd),
+                cmd,
                 stdin=subprocess.PIPE,
                 stdout=stdout,
                 stderr=stderr,
