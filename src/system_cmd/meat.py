@@ -14,13 +14,17 @@ class Shared():
     p = None
      
 def on_sigterm(a,b):
-    print('SIGTERM caught --- terminating child process')
-    Shared.p.terminate()
+    #print('SIGTERM caught --- terminating child process')
+    try:
+        Shared.p.terminate()
+    except OSError: # e.g. OSError: [Errno 3] No such process
+        pass   
     #os.kill(Shared.p.pid, signal.SIGKILL)
 
 def set_term_function(process):
     Shared.p = process
     signal.signal(signal.SIGTERM, on_sigterm)
+    
 
 @contract(cwd='str', cmd='str|list(str)')
 def system_cmd_result(cwd, cmd,
