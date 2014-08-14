@@ -4,9 +4,22 @@ import subprocess
 import sys
 import tempfile
 import os
+import signal
 
 
 __all__ = ['system_cmd_result']
+
+class Shared():
+    p = None
+     
+def on_sigterm():
+    print('SIGTERM caught --- terminating child process')
+    Shared.p.terminate()
+    #os.kill(Shared.p.pid, signal.SIGKILL)
+
+def set_term_function(process):
+    Shared.p = process
+    signal.signal(signal.SIGTERM, on_sigterm)
 
 def system_cmd_result(cwd, cmd,
                       display_stdout=False,
@@ -32,9 +45,9 @@ def system_cmd_result(cwd, cmd,
     interrupted = False
 
     try:
-        #stdout = None if display_stdout else 
+        # stdout = None if display_stdout else 
         stdout = tmp_stdout.fileno()
-#        stderr = None if display_stderr else 
+        # stderr = None if display_stderr else 
         stderr = tmp_stderr.fileno()
         p = subprocess.Popen(
                 cmd2args(cmd),
@@ -43,6 +56,7 @@ def system_cmd_result(cwd, cmd,
                 stderr=stderr,
                 bufsize=0,
                 cwd=cwd)
+        set_term_function(p)
 
         if write_stdin != '':
             p.stdin.write(write_stdin)
@@ -78,7 +92,6 @@ def system_cmd_result(cwd, cmd,
 
     if display_stderr and captured_stderr:
         display_stream.write(indent(captured_stderr,'stdout>'))
-
 
     res = CmdResult(cwd, cmd, ret, rets, interrupted,
                     stdout=captured_stdout,
