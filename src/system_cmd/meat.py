@@ -66,7 +66,7 @@ def system_cmd_result(cwd, cmd,
                 stderr=stderr,
                 bufsize=0,
                 cwd=cwd)
-        set_term_function(p)
+#         set_term_function(p)
 
         if write_stdin != '':
             p.stdin.write(write_stdin)
