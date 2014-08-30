@@ -1,14 +1,16 @@
 from .structures import CmdException, CmdResult
 from .utils import cmd2args, indent
 from contracts import contract
+import os
+import signal
 import subprocess
 import sys
 import tempfile
-import os
-import signal
 
 
-__all__ = ['system_cmd_result']
+__all__ = [
+    'system_cmd_result',
+]
 
 class Shared():
     p = None
@@ -34,7 +36,7 @@ def system_cmd_result(cwd, cmd,
                       display_prefix=None, # leave it there
                       write_stdin='',
                       capture_keyboard_interrupt=False,
-                      display_stream=sys.stderr):  # @UnusedVariable
+                      display_stream=sys.stdout):  # @UnusedVariable
     ''' 
         Returns the structure CmdResult; raises CmdException.
         Also OSError are captured.
@@ -97,11 +99,17 @@ def system_cmd_result(cwd, cmd,
     captured_stdout = read_all(tmp_stdout)
     captured_stderr = read_all(tmp_stderr)
 
+    if (display_stdout and captured_stdout) or (display_stderr and captured_stderr):
+        display_stream.write('$ %s\n' % cmd)
+        display_stream.flush()
+
     if display_stdout and captured_stdout:
-        display_stream.write(indent(captured_stdout,'stderr>'))
+        display_stream.write(indent(captured_stdout,'stderr>') + '\n')
+        display_stream.flush()
 
     if display_stderr and captured_stderr:
-        display_stream.write(indent(captured_stderr,'stdout>'))
+        display_stream.write(indent(captured_stderr,'stdout>') + '\n')
+        display_stream.flush()
 
     res = CmdResult(cwd, cmd, ret, rets, interrupted,
                     stdout=captured_stdout,
