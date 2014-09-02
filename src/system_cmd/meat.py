@@ -98,18 +98,19 @@ def system_cmd_result(cwd, cmd,
 
     captured_stdout = read_all(tmp_stdout)
     captured_stderr = read_all(tmp_stderr)
-
-    if (display_stdout and captured_stdout) or (display_stderr and captured_stderr):
-        display_stream.write('$ %s\n' % cmd)
-        display_stream.flush()
+    
+    s = ""
+    if (display_stdout and captured_stdout) or (display_stderr and captured_stderr):        
+        s += '$ %s\n' % cmd
 
     if display_stdout and captured_stdout:
-        display_stream.write(indent(captured_stdout,'stderr>') + '\n')
-        display_stream.flush()
+        s += indent(captured_stdout,'stderr>') + '\n'
 
     if display_stderr and captured_stderr:
-        display_stream.write(indent(captured_stderr,'stdout>') + '\n')
-        display_stream.flush()
+        s += indent(captured_stderr,'stdout>') + '\n'
+
+    if s:
+        print(s)
 
     res = CmdResult(cwd, cmd, ret, rets, interrupted,
                     stdout=captured_stdout,
