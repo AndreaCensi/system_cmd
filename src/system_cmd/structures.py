@@ -16,8 +16,9 @@ class CmdResult(object):
         self.interrupted = interrupted
 
     def __str__(self):
+        from system_cmd.utils import copyable_cmd
         msg = ('The command: %s\n'
-               '     in dir: %s\n' % (self.cmd, self.cwd))
+               '     in dir: %s\n' % (copyable_cmd(self.cmd), self.cwd))
 
         if self.interrupted:
             msg += 'Was interrupted by the user\n'

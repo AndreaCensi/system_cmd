@@ -1,11 +1,13 @@
 from .structures import CmdException, CmdResult
 from .utils import cmd2args, indent
+from . import logger
 from contracts import contract
 import os
-import signal
+# import signal
 import subprocess
 import sys
 import tempfile
+from .utils import copyable_cmd
 
 
 __all__ = [
@@ -14,18 +16,18 @@ __all__ = [
 
 class Shared():
     p = None
-     
-def on_sigterm(a,b):
-    #print('SIGTERM caught --- terminating child process')
-    try:
-        Shared.p.terminate()
-    except OSError: # e.g. OSError: [Errno 3] No such process
-        pass   
-    #os.kill(Shared.p.pid, signal.SIGKILL)
-
-def set_term_function(process):
-    Shared.p = process
-    signal.signal(signal.SIGTERM, on_sigterm)
+#      
+# def on_sigterm(a,b):
+#     #print('SIGTERM caught --- terminating child process')
+#     try:
+#         Shared.p.terminate()
+#     except OSError: # e.g. OSError: [Errno 3] No such process
+#         pass   
+#     #os.kill(Shared.p.pid, signal.SIGKILL)
+# 
+# def set_term_function(process):
+#     Shared.p = process
+#     signal.signal(signal.SIGTERM, on_sigterm)
     
 
 @contract(cwd='str', cmd='str|list(str)')
@@ -52,6 +54,9 @@ def system_cmd_result(cwd, cmd,
     rets = None
     interrupted = False
 
+#     if (display_stdout and captured_stdout) or (display_stderr and captured_stderr):        
+    
+        
     try:
         # stdout = None if display_stdout else 
         stdout = tmp_stdout.fileno()
@@ -59,8 +64,10 @@ def system_cmd_result(cwd, cmd,
         stderr = tmp_stderr.fileno()
         if isinstance(cmd, str):
             cmd = cmd2args(cmd)
-        else:
-            assert isinstance(cmd, list)
+        
+        assert isinstance(cmd, list)
+        if display_stdout or display_stderr:
+            logger.info('$ %s' % copyable_cmd(cmd))
         p = subprocess.Popen(
                 cmd,
                 stdin=subprocess.PIPE,
@@ -96,21 +103,19 @@ def system_cmd_result(cwd, cmd,
         os.lseek(f.fileno(), 0, 0)
         return f.read().strip()
 
-    captured_stdout = read_all(tmp_stdout)
-    captured_stderr = read_all(tmp_stderr)
+    captured_stdout = read_all(tmp_stdout).strip()
+    captured_stderr = read_all(tmp_stderr).strip()
     
     s = ""
-    if (display_stdout and captured_stdout) or (display_stderr and captured_stderr):        
-        s += '$ %s\n' % cmd
 
     if display_stdout and captured_stdout:
-        s += indent(captured_stdout,'stderr>') + '\n'
+        s += indent(captured_stdout,'stdout>') + '\n'
 
     if display_stderr and captured_stderr:
-        s += indent(captured_stderr,'stdout>') + '\n'
+        s += indent(captured_stderr,'stderr>') + '\n'
 
     if s:
-        print(s)
+        logger.debug(s)
 
     res = CmdResult(cwd, cmd, ret, rets, interrupted,
                     stdout=captured_stdout,
@@ -121,6 +126,7 @@ def system_cmd_result(cwd, cmd,
             raise CmdException(res)
 
     return res
+
 
 # 
 # def system_cmd_result(

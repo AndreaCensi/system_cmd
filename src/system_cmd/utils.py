@@ -1,4 +1,4 @@
-
+from contracts import contract
 
 def cmd2args(s):
     ''' if s is a list, leave it like that; otherwise split()'''
@@ -8,7 +8,6 @@ def cmd2args(s):
         return s.split() 
     else: 
         assert False
-
     
 def wrap(header, s, N=30):
     header = '  ' + header + '  '
@@ -27,8 +26,24 @@ def result_format(cwd, cmd, ret, stdout=None, stderr=None):
         msg += '\n' + wrap('stderr', stderr)
     return msg
     
-
 def indent(s, prefix):
     lines = s.split('\n')
     lines = ['%s%s' % (prefix, line.rstrip()) for line in lines]
     return '\n'.join(lines)
+ 
+
+@contract(cmds='list(str)')
+def copyable_cmd(cmds):
+    """ Returns the commands as a copyable string. """
+    @contract(x='str')
+    def copyable(x):
+        if (not ' ' in x) and (not '"' in x) and (not '"' in x):
+            return x
+        else:
+            if '"' in x:
+                return "'%s'" % x
+            else:
+                return '"%s"' % x
+            
+    return " ".join(map(copyable, cmds))
+
