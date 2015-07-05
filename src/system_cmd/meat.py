@@ -1,13 +1,12 @@
-from .structures import CmdException, CmdResult
-from .utils import cmd2args, indent
 from . import logger
+from .structures import CmdException, CmdResult
+from .utils import cmd2args, copyable_cmd, indent
 from contracts import contract
 import os
-# import signal
 import subprocess
 import sys
 import tempfile
-from .utils import copyable_cmd
+# import signal
 
 
 __all__ = [
@@ -108,11 +107,13 @@ def system_cmd_result(cwd, cmd,
     
     s = ""
 
+    captured_stdout = remove_empty_lines(captured_stdout)
+    captured_stderr = remove_empty_lines(captured_stderr)
     if display_stdout and captured_stdout:
-        s += indent(captured_stdout,'stdout>') + '\n'
+        s += indent((captured_stdout), 'stdout>') + '\n'
 
     if display_stderr and captured_stderr:
-        s += indent(captured_stderr,'stderr>') + '\n'
+        s += indent((captured_stderr), 'stderr>') + '\n'
 
     if s:
         logger.debug(s)
@@ -127,6 +128,11 @@ def system_cmd_result(cwd, cmd,
 
     return res
 
+def remove_empty_lines(s):
+    lines = s.split("\n")
+    empty = lambda line: len(line.strip()) == 0
+    lines = [l for l in lines if not empty(l)]
+    return "\n".join(lines)
 
 # 
 # def system_cmd_result(
