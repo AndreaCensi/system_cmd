@@ -87,6 +87,7 @@ def system_cmd_result(cwd, cmd,
         interrupted = False
 
     except KeyboardInterrupt:
+        logger.debug('Keyboard interrupt for:\n %s' % " ".join(cmd))
         if capture_keyboard_interrupt:
             ret = 100
             interrupted = True
