@@ -37,7 +37,8 @@ def system_cmd_result(cwd, cmd,
                       display_prefix=None, # leave it there
                       write_stdin='',
                       capture_keyboard_interrupt=False,
-                      display_stream=sys.stdout):  # @UnusedVariable
+                      display_stream=sys.stdout, # @UnusedVariable
+                      env=None): 
     ''' 
         Returns the structure CmdResult; raises CmdException.
         Also OSError are captured.
@@ -45,6 +46,9 @@ def system_cmd_result(cwd, cmd,
         
         :param write_stdin: A string to write to the process.
     '''
+    
+    if env is None:
+        env = os.environ.copy()
 
     tmp_stdout = tempfile.TemporaryFile()
     tmp_stderr = tempfile.TemporaryFile()
@@ -73,7 +77,8 @@ def system_cmd_result(cwd, cmd,
                 stdout=stdout,
                 stderr=stderr,
                 bufsize=0,
-                cwd=cwd)
+                cwd=cwd,
+                env=env)
 #         set_term_function(p)
 
         if write_stdin != '':
