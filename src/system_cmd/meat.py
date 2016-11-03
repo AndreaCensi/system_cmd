@@ -29,7 +29,7 @@ class Shared():
 #     signal.signal(signal.SIGTERM, on_sigterm)
     
 
-@contract(cwd='str', cmd='str|list(str)')
+@contract(cwd='str', cmd='str|list(str)', env=dict)
 def system_cmd_result(cwd, cmd,
                       display_stdout=False,
                       display_stderr=False,
