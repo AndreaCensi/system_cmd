@@ -5,7 +5,7 @@ import os
 def get_version(filename):
     import ast
     version = None
-    with file(filename) as f:
+    with open(filename) as f:
         for line in f:
             if line.startswith('__version__'):
                 version = ast.parse(line).body[0].value.s
@@ -26,6 +26,7 @@ def read(fname):
       return ""
     
 setup(name='SystemCmd',
+      python_requires='<3.0',
       author="Andrea Censi",
       author_email="censi@mit.edu",
       url='http://github.com/AndreaCensi/system_cmd',
