@@ -1,11 +1,14 @@
-from . import logger
-from .structures import CmdException, CmdResult
-from .utils import cmd2args, copyable_cmd, indent
-from contracts import contract
 import os
 import subprocess
 import sys
 import tempfile
+
+from contracts import contract
+
+from . import logger
+from .structures import CmdException, CmdResult
+from .utils import cmd2args, copyable_cmd, indent
+
 # import signal
 
 
@@ -13,9 +16,12 @@ __all__ = [
     'system_cmd_result',
 ]
 
+
 class Shared():
     p = None
-#      
+
+
+#
 # def on_sigterm(a,b):
 #     #print('SIGTERM caught --- terminating child process')
 #     try:
@@ -27,18 +33,18 @@ class Shared():
 # def set_term_function(process):
 #     Shared.p = process
 #     signal.signal(signal.SIGTERM, on_sigterm)
-    
+
 
 @contract(cwd='None|str', cmd='str|list(str)', env='dict|None')
 def system_cmd_result(cwd, cmd,
                       display_stdout=False,
                       display_stderr=False,
                       raise_on_error=False,
-                      display_prefix=None, # leave it there
+                      display_prefix=None,  # leave it there
                       write_stdin='',
                       capture_keyboard_interrupt=False,
-                      display_stream=sys.stdout, # @UnusedVariable
-                      env=None): 
+                      display_stream=sys.stdout,  # @UnusedVariable
+                      env=None):
     ''' 
         Returns the structure CmdResult; raises CmdException.
         Also OSError are captured.
@@ -46,7 +52,7 @@ def system_cmd_result(cwd, cmd,
         
         :param write_stdin: A string to write to the process.
     '''
-    
+
     if env is None:
         env = os.environ.copy()
 
@@ -57,9 +63,8 @@ def system_cmd_result(cwd, cmd,
     rets = None
     interrupted = False
 
-#     if (display_stdout and captured_stdout) or (display_stderr and captured_stderr):        
-    
-        
+    #     if (display_stdout and captured_stdout) or (display_stderr and captured_stderr):
+
     try:
         # stdout = None if display_stdout else 
         stdout = tmp_stdout.fileno()
@@ -67,7 +72,7 @@ def system_cmd_result(cwd, cmd,
         stderr = tmp_stderr.fileno()
         if isinstance(cmd, str):
             cmd = cmd2args(cmd)
-        
+
         assert isinstance(cmd, list)
         if display_stdout or display_stderr:
             logger.info('$ %s' % copyable_cmd(cmd))
@@ -79,7 +84,7 @@ def system_cmd_result(cwd, cmd,
                 bufsize=0,
                 cwd=cwd,
                 env=env)
-#         set_term_function(p)
+        #         set_term_function(p)
 
         if write_stdin != '':
             p.stdin.write(write_stdin)
@@ -97,7 +102,7 @@ def system_cmd_result(cwd, cmd,
             ret = 100
             interrupted = True
         else:
-            raise 
+            raise
     except OSError as e:
         interrupted = False
         ret = 200
@@ -110,7 +115,7 @@ def system_cmd_result(cwd, cmd,
 
     captured_stdout = read_all(tmp_stdout).strip()
     captured_stderr = read_all(tmp_stderr).strip()
-    
+
     s = ""
 
     captured_stdout = remove_empty_lines(captured_stdout)
@@ -134,13 +139,15 @@ def system_cmd_result(cwd, cmd,
 
     return res
 
+
 def remove_empty_lines(s):
-    lines = s.split("\n")
+    lines = s.split(b"\n")
     empty = lambda line: len(line.strip()) == 0
     lines = [l for l in lines if not empty(l)]
-    return "\n".join(lines)
+    return b"\n".join(lines)
 
-# 
+
+#
 # def system_cmd_result(
 #     cwd, cmd,
 #     display_stdout=False,
@@ -205,11 +212,11 @@ def remove_empty_lines(s):
 #             raise CmdException(res)
 #     
 #     return res
-        
-        
+
+
 def alternative_nonworking(p, display_stderr, display_stdout, display_prefix):
     """ Returns stdout, stderr """
-    
+
     # p.stdin.close()
     stderr = ''
     stdout = ''
@@ -217,7 +224,7 @@ def alternative_nonworking(p, display_stderr, display_stdout, display_prefix):
     stdout_lines = []
     stderr_to_read = True
     stdout_to_read = True
-    
+
     def read_stream(stream, lines):
         if stream:
             nexti = stream.readline()
@@ -229,28 +236,28 @@ def alternative_nonworking(p, display_stderr, display_stdout, display_prefix):
         else:
             stream.close()
             return False
-            
+
     # XXX: read all the lines
     while stderr_to_read or stdout_to_read:
-        
+
         if stderr_to_read:
             stderr_to_read = read_stream(p.stderr, stderr_lines)
-#             stdout_to_read = False
-    
+        #             stdout_to_read = False
+
         if stdout_to_read:
             stdout_to_read = read_stream(p.stdout, stdout_lines)
-        
+
         while stderr_lines:
             l = stderr_lines.pop(0)
             stderr += l
             if display_stderr:
                 sys.stderr.write('%s ! %s' % (display_prefix, l))
-                
+
         while stdout_lines:
             l = stdout_lines.pop(0)
             stdout += l
             if display_stdout:
                 sys.stderr.write('%s   %s' % (display_prefix, l))
-            
+
     stdout = p.stdout.read()
     return stdout, stderr
