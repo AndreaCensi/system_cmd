@@ -1,6 +1,7 @@
-__version__ = '1.3.3'
+__version__ = '2.0.0'
 
 import logging
+
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -8,5 +9,3 @@ logger.setLevel(logging.DEBUG)
 from .meat import *
 from .interface import *
 from .structures import *
-
-
