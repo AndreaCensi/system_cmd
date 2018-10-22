@@ -60,6 +60,7 @@ setup(name='SystemCmd',
       packages=find_packages('src'),
       install_requires=[
           'PyContracts',
+          'six',
       ],
       tests_require=['nose'],
       )
