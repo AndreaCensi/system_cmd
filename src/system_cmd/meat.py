@@ -3,6 +3,7 @@ import subprocess
 import sys
 import tempfile
 
+import six
 from contracts import contract
 
 from . import logger
@@ -17,7 +18,7 @@ __all__ = [
 ]
 
 
-class Shared():
+class Shared(object):
     p = None
 
 
@@ -120,11 +121,16 @@ def system_cmd_result(cwd, cmd,
 
     captured_stdout = remove_empty_lines(captured_stdout)
     captured_stderr = remove_empty_lines(captured_stderr)
+
+    if six.PY3:
+        captured_stdout = captured_stdout.decode()
+        captured_stderr = captured_stderr.decode()
+
     if display_stdout and captured_stdout:
-        s += indent((captured_stdout), 'stdout>') + '\n'
+        s += indent(captured_stdout, 'stdout>') + '\n'
 
     if display_stderr and captured_stderr:
-        s += indent((captured_stderr), 'stderr>') + '\n'
+        s += indent(captured_stderr, 'stderr>') + '\n'
 
     if s:
         logger.debug(s)

@@ -7,4 +7,5 @@ def test_one():
 
 
 def test_false():
-    system_cmd_result('.', 'cp not-existing done')
+    res = system_cmd_result('.', 'cp not-existing done')
+    print(res)
