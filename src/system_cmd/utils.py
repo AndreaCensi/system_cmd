@@ -1,3 +1,5 @@
+import six
+
 from contracts import contract
 
 
@@ -5,7 +7,7 @@ def cmd2args(s):
     ''' if s is a list, leave it like that; otherwise split()'''
     if isinstance(s, list):
         return s
-    elif isinstance(s, str):
+    elif isinstance(s, six.string_types):
         return s.split()
     else:
         assert False

@@ -71,7 +71,7 @@ def system_cmd_result(cwd, cmd,
         stdout = tmp_stdout.fileno()
         # stderr = None if display_stderr else 
         stderr = tmp_stderr.fileno()
-        if isinstance(cmd, str):
+        if isinstance(cmd, six.string_types):
             cmd = cmd2args(cmd)
 
         assert isinstance(cmd, list)
