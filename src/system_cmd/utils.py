@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import six
 
 from contracts import contract
@@ -38,11 +39,11 @@ def indent(s, prefix):
     return '\n'.join(lines)
 
 
-@contract(cmds='list(str)')
+# @contract(cmds='list(string)')
 def copyable_cmd(cmds):
     """ Returns the commands as a copyable string. """
 
-    @contract(x='str')
+    # @contract(x='string')
     def copyable(x):
         if (not ' ' in x) and (not '"' in x) and (not '"' in x):
             return x

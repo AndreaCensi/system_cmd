@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from .utils import indent
 
 __all__ = [
@@ -38,4 +39,3 @@ class CmdException(Exception):
         Exception.__init__(self, str(cmd_result))
         self.res = cmd_result
 
-        

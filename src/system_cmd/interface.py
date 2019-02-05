@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from .meat import system_cmd_result
 
 __all__ = [

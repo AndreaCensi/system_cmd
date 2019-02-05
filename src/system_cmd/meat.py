@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import os
 import subprocess
 import sys
@@ -36,7 +37,7 @@ class Shared(object):
 #     signal.signal(signal.SIGTERM, on_sigterm)
 
 
-@contract(cwd='None|str', cmd='str|list(str)', env='dict|None')
+@contract(cwd='None|string', cmd='string|list(string)', env='dict|None')
 def system_cmd_result(cwd, cmd,
                       display_stdout=False,
                       display_stderr=False,
@@ -123,8 +124,8 @@ def system_cmd_result(cwd, cmd,
     captured_stderr = remove_empty_lines(captured_stderr)
 
     if six.PY3:
-        captured_stdout = captured_stdout.decode()
-        captured_stderr = captured_stderr.decode()
+        captured_stdout = captured_stdout.decode('utf-8')
+        captured_stderr = captured_stderr.decode('utf-8')
 
     if display_stdout and captured_stdout:
         s += indent(captured_stdout, 'stdout>') + '\n'
