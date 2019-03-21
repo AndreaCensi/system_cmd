@@ -111,7 +111,7 @@ def system_cmd_result(cwd, cmd,
         rets = str(e)
 
     # remember to go back
-    def read_all(f):
+    def read_all(f) -> bytes:
         os.lseek(f.fileno(), 0, 0)
         return f.read().strip()
 
@@ -120,12 +120,22 @@ def system_cmd_result(cwd, cmd,
 
     s = ""
 
-    captured_stdout = remove_empty_lines(captured_stdout)
-    captured_stderr = remove_empty_lines(captured_stderr)
+    # captured_stdout = remove_empty_lines(captured_stdout)
+    # captured_stderr = remove_empty_lines(captured_stderr)
 
-    if six.PY3:
-        captured_stdout = captured_stdout.decode('utf-8')
-        captured_stderr = captured_stderr.decode('utf-8')
+    # if six.PY3:
+    def decode_one(x):
+
+        try:
+            return x.decode('utf-8')
+        except UnicodeDecodeError as e:
+            msg = 'Stream is not valid UTF-8: %s' % e
+            msg += '\nI will read the rest ignoring the errors.'
+            logger.error(msg)
+            return x.decode('utf-8', errors='ignore')
+
+    captured_stdout = decode_one(captured_stdout)
+    captured_stderr = decode_one(captured_stderr)
 
     if display_stdout and captured_stdout:
         s += indent(captured_stdout, 'stdout>') + '\n'

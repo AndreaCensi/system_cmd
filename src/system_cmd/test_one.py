@@ -10,3 +10,9 @@ def test_one():
 def test_false():
     res = system_cmd_result('.', 'cp not-existing done')
     print(res)
+
+
+def test_false2():
+    res = system_cmd_result('.', 'cat UTF-8-test.txt',
+                            display_stderr=True, display_stdout=True)
+    print(res)
