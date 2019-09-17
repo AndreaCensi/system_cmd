@@ -129,7 +129,8 @@ def system_cmd_result(cwd, cmd,
         try:
             return x.decode('utf-8')
         except UnicodeDecodeError as e:
-            msg = 'Stream is not valid UTF-8: %s' % e
+            msg = 'Cannot decode the output of the command %s' % cmd
+            msg += '\nStream is not valid UTF-8: %s' % e
             msg += '\nI will read the rest ignoring the errors.'
             logger.error(msg)
             return x.decode('utf-8', errors='ignore')
