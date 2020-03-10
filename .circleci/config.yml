@@ -4,12 +4,12 @@ workflows:
   test:
     jobs:
       - test-3.6
-      - test-3.5
-      - test-2.7
+      - test-3.7
+      - test-3.8
 jobs:
   test-3.6: &test-template
     docker:
-      - image: circleci/python:3.6-jessie
+      - image: python:3.6
     working_directory: ~/repo
     steps:
       - checkout
@@ -25,11 +25,11 @@ jobs:
             pip install --user nose
             PATH=~/.local/bin:$PATH ~/.local/bin/nosetests system_cmd
 
-  test-3.5:
+  test-3.7:
     <<: *test-template
     docker:
-      - image: circleci/python:3.5-jessie
-  test-2.7:
+      - image: python:3.7
+  test-3.8:
     <<: *test-template
     docker:
-      - image: circleci/python:2.7-jessie
+      - image: python:3.8
