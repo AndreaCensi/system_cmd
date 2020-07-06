@@ -1,17 +1,18 @@
-from __future__ import unicode_literals
+
 import os
 import subprocess
 import sys
 import tempfile
+from typing import Optional, Union, List, Dict
 
 import six
-from contracts import contract
+# from contracts import contract
 
 from . import logger
 from .structures import CmdException, CmdResult
 from .utils import cmd2args, copyable_cmd, indent
 
-# import signal
+
 
 
 __all__ = [
@@ -29,16 +30,16 @@ class Shared(object):
 #     try:
 #         Shared.p.terminate()
 #     except OSError: # e.g. OSError: [Errno 3] No such process
-#         pass   
+#         pass
 #     #os.kill(Shared.p.pid, signal.SIGKILL)
-# 
+#
 # def set_term_function(process):
 #     Shared.p = process
 #     signal.signal(signal.SIGTERM, on_sigterm)
 
 
-@contract(cwd='None|string', cmd='string|list(string)', env='dict|None')
-def system_cmd_result(cwd, cmd,
+# @contract(cwd='None|string', cmd='string|list(string)', env='dict|None')
+def system_cmd_result(cwd: Optional[str], cmd: Union[str, List[str]],
                       display_stdout=False,
                       display_stderr=False,
                       raise_on_error=False,
@@ -46,12 +47,12 @@ def system_cmd_result(cwd, cmd,
                       write_stdin='',
                       capture_keyboard_interrupt=False,
                       display_stream=sys.stdout,  # @UnusedVariable
-                      env=None):
-    ''' 
+                      env:Optional[Dict[str, str]]=None):
+    '''
         Returns the structure CmdResult; raises CmdException.
         Also OSError are captured.
         KeyboardInterrupt is passed through unless specified
-        
+
         :param write_stdin: A string to write to the process.
     '''
 
@@ -68,9 +69,9 @@ def system_cmd_result(cwd, cmd,
     #     if (display_stdout and captured_stdout) or (display_stderr and captured_stderr):
 
     try:
-        # stdout = None if display_stdout else 
+        # stdout = None if display_stdout else
         stdout = tmp_stdout.fileno()
-        # stderr = None if display_stderr else 
+        # stderr = None if display_stderr else
         stderr = tmp_stderr.fileno()
         if isinstance(cmd, six.string_types):
             cmd = cmd2args(cmd)
@@ -172,44 +173,44 @@ def remove_empty_lines(s):
 #     display_stderr=False,
 #     raise_on_error=False,
 #     display_prefix=None,
-#     capture_keyboard_interrupt=False):  
-#     ''' 
+#     capture_keyboard_interrupt=False):
+#     '''
 #         Returns the structure CmdResult; raises CmdException.
 #         Also OSError are captured.
 #         KeyboardInterrupt is passed through unless specified
-#         
+#
 #         :param write_stdin: A string to write to the process.
 #     '''
 #     if display_prefix is None:
 #         display_prefix = '%s %s' % (cwd, cmd)
-#     
+#
 #     try:
-#             
+#
 #         p = subprocess.Popen(
 #                 cmd2args(cmd),
 #                 stdout=subprocess.PIPE,
 #                 stderr=subprocess.PIPE,
 #                 cwd=cwd)
-#         
+#
 #         if 1:  # XXX?
 #             stdout, stderr = p.communicate()
-#             
+#
 #             stdout = stdout.strip()
 #             stderr = stderr.strip()
-#             
+#
 #             prefix = display_prefix + 'err> '
 #             if display_stderr and stderr:
 #                 print(indent(stderr, prefix))
-#                 
+#
 #             prefix = display_prefix + 'out> '
 #             if display_stdout and stdout:
 #                 print(indent(stdout, prefix))
-#     
+#
 #         else:
 #             stdout, stderr = alternative_nonworking(p, display_stderr, display_stdout, display_prefix)
-#             
+#
 #         p.wait()
-#         
+#
 #     except KeyboardInterrupt:
 #         if not capture_keyboard_interrupt:
 #             raise
@@ -218,17 +219,17 @@ def remove_empty_lines(s):
 #                 raise CmdException('Interrupted')
 #             else:
 #                 res = CmdResult(cwd=cwd, cmd=cmd,
-#                                 ret=None, stdout='Interrupted', stderr='Interrupted')  
+#                                 ret=None, stdout='Interrupted', stderr='Interrupted')
 #                 return res
-# 
-#     ret = p.returncode 
-#     
+#
+#     ret = p.returncode
+#
 #     res = CmdResult(cwd, cmd, ret, stdout, stderr)
-#     
+#
 #     if raise_on_error:
 #         if res.ret != 0:
 #             raise CmdException(res)
-#     
+#
 #     return res
 
 

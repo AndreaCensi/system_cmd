@@ -1,7 +1,7 @@
-from __future__ import unicode_literals
+# from __future__ import unicode_literals
 import six
 
-from contracts import contract
+# from contracts import contract
 
 
 def cmd2args(s):
