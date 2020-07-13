@@ -1,2 +1,2 @@
-PyContracts3==3.0.2
+PyContracts3>=3.0.2
 six==1.14.0
