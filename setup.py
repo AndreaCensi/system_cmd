@@ -26,9 +26,13 @@ def read(fname):
         return open(os.path.join(os.path.dirname(__file__), fname)).read()
     except IOError:
         return ""
+install_requires=[
+      'PyContracts3',
+      'six',
+  ]
 
-
-setup(name='SystemCmd',
+line = 'z6'
+setup(name=f'SystemCmd-{line}',
       # python_requires='<3.0',
       author="Andrea Censi",
       author_email="censi@mit.edu",
@@ -58,9 +62,6 @@ setup(name='SystemCmd',
       },
       package_dir={'': 'src'},
       packages=find_packages('src'),
-      install_requires=[
-          'PyContracts',
-          'six',
-      ],
+      install_requires=install_requires,
       tests_require=['nose'],
       )
