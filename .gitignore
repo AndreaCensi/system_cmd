@@ -37,3 +37,4 @@ nosetests.xml
 .noseids
 UTF-8-test.txt
 example
+out
