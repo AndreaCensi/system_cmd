@@ -4,8 +4,10 @@ version_file: "1"
 modules:
   - system_cmd
 
-install_requires: []
-
+install_requires:
+  - PyContracts3
+  - zuper-commons-z7
+  - six
 install_conflicts: [ 'SystemCmd*' ]
 tests_require: [ ]
 

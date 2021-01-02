@@ -1,11 +1,8 @@
 __version__ = "3.0.9"
 
+from zuper_commons import ZLogger
 
-import logging
-
-logging.basicConfig()
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger = ZLogger(__name__)
 
 from .meat import *
 from .interface import *
