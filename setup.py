@@ -39,7 +39,7 @@ setup(
     name=f"SystemCmd-{line}",
     # python_requires='<3.0',
     author="Andrea Censi",
-    author_email="censi@mit.edu",
+    author_email="github@censi.org",
     url="http://github.com/AndreaCensi/system_cmd",
     description="""My wrappers for subprocess.POpen""",
     long_description=read("README.rst"),
