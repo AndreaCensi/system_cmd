@@ -1,9 +1,7 @@
-import os
-
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
-def get_version(filename):
+def get_version_from_source(filename):
     import ast
 
     version = None
@@ -13,55 +11,42 @@ def get_version(filename):
                 version = ast.parse(line).body[0].value.s
                 break
         else:
-            raise ValueError("No version found in %r." % filename)
+            raise ValueError(f"No version found in {filename!r}.")
     if version is None:
         raise ValueError(filename)
     return version
 
 
-version = get_version(filename="src/system_cmd/__init__.py")
+import yaml
 
+with open("project.pp1.yaml") as f:
+    data = yaml.load(f, Loader=yaml.Loader)
 
-def read(fname):
-    try:
-        return open(os.path.join(os.path.dirname(__file__), fname)).read()
-    except IOError:
-        return ""
+install_requires = data["install_requires"]
+tests_require = data["tests_require"]
 
+src = data["srcdir"]
+console_scripts = [f"{k} = {v}" for k, v in data["console_scripts"].items()]
+package_name = data["package_name"]
+packages = data["modules"]
+main_package = packages[0]
+version = get_version_from_source(f"{src}/{main_package}/__init__.py")
 
-install_requires = [
-    "PyContracts3",
-    "six",
-]
-
-line = "z7"
-setup(
-    name=f"SystemCmd-{line}",
-    # python_requires='<3.0',
-    author="Andrea Censi",
-    author_email="github@censi.org",
-    url="http://github.com/AndreaCensi/system_cmd",
-    description="""My wrappers for subprocess.POpen""",
-    long_description=read("README.rst"),
-    keywords="",
-    license="",
-    classifiers=[
-        "Development Status :: 4 - Beta",
-        # 'Intended Audience :: Developers',
-        # 'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
-        # 'Topic :: Software Development :: Quality Assurance',
-        # 'Topic :: Software Development :: Documentation',
-        # 'Topic :: Software Development :: Testing'
-    ],
-    version=version,
-    download_url="http://github.com/AndreaCensi/system_cmd/tarball/%s" % version,
-    entry_points={
-        "console_scripts": [
-            # 'comptests = comptests:main_comptests'
-        ]
-    },
-    package_dir={"": "src"},
-    packages=find_packages("src"),
+# setup package
+params = dict(
+    name=package_name,
+    author=data["author"],
+    author_email=data["author_email"],
+    url=data["url"],
+    tests_require=tests_require,
     install_requires=install_requires,
-    tests_require=["nose"],
+    package_dir={"": src},
+    packages=data["modules"],
+    long_description="",
+    version=version,
+    entry_points={"console_scripts": console_scripts},
 )
+
+setup(**params)
+
+# sigil eb9c1d7b9c70de6abb2a4a14d0c49253
