@@ -1,0 +1,24 @@
+{
+  "install_requires": [
+    "PyContracts3",
+    "six",
+    "zuper-commons-z7"
+  ],
+  "tests_require": [],
+  "srcdir": "src",
+  "package_name": "SystemCmd-z7",
+  "entry_points": {
+    "console_scripts": [
+      "zt-demo = zuper_utils_asyncio:zt_demo"
+    ]
+  },
+  "zip_safe": false,
+  "include_package_data": false,
+  "modules": [
+    "system_cmd"
+  ],
+  "version": "7.1.2101052340",
+  "author": "",
+  "author_email": "info@zupermind.com",
+  "url": "http://github.com/zupermind/PACKAGENAME"
+}
