@@ -2,8 +2,7 @@ jobs:
   test-3.8-production:
     docker:
     - {image: python:3.8}
-    environment: {COLUMNS: '160', COVER_PACKAGES: 'system_cmd_tests,system_cmd.meat,system_cmd.utils,system_cmd,system_cmd.which,system_cmd.interface,system_cmd.test_one,system_cmd.structures',
-      PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin,
+    environment: {COLUMNS: '160', COVER_PACKAGES: 'system_cmd,system_cmd_tests', PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin,
       TEST_PACKAGES: system_cmd_tests}
     steps:
     - checkout
@@ -45,8 +44,7 @@ jobs:
   test-3.8-staging:
     docker:
     - {image: python:3.8}
-    environment: {COLUMNS: '160', COVER_PACKAGES: 'system_cmd_tests,system_cmd.meat,system_cmd.utils,system_cmd,system_cmd.which,system_cmd.interface,system_cmd.test_one,system_cmd.structures',
-      PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin,
+    environment: {COLUMNS: '160', COVER_PACKAGES: 'system_cmd,system_cmd_tests', PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin,
       TEST_PACKAGES: system_cmd_tests}
     steps:
     - checkout
@@ -99,4 +97,4 @@ workflows:
           branches: {ignore: /z7-stage.*/}
   version: 2
 
-# sigil 5dc8ba74227a1c8996093f2b819fca1c
+# sigil 44134eb0799e1c4fb73de4bfc6d97304
