@@ -2,7 +2,7 @@ jobs:
   test-3.8-production:
     docker:
     - {image: python:3.8}
-    environment: {COLUMNS: '160', COVER_PACKAGES: 'system_cmd_tests,system_cmd.interface,system_cmd.structures,system_cmd,system_cmd.which,system_cmd.utils,system_cmd.test_one,system_cmd.meat',
+    environment: {COLUMNS: '160', COVER_PACKAGES: 'system_cmd_tests,system_cmd.meat,system_cmd.utils,system_cmd,system_cmd.which,system_cmd.interface,system_cmd.test_one,system_cmd.structures',
       PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin,
       TEST_PACKAGES: system_cmd_tests}
     steps:
@@ -33,7 +33,7 @@ jobs:
           \n#              --processes=8 --process-timeout=1000 --process-restartworker\
           \ \\\n# --cover-packages=${COVER_PACKAGES} \\\nnosetests \\\n  --rednose\
           \ --immediate \\\n  --cover-tests --with-coverage \\\n  --with-xunitmp --xunitmp-file=${xunit_output}\
-          \ \\\n  --cover-packages=${COVER_PACKAGES} \\\n  ${TEST_PACKAGES}\n", name: Run
+          \ \\\n  --cover-package=${COVER_PACKAGES} \\\n  ${TEST_PACKAGES}\n", name: Run
           tests}
     - store_test_results: {path: out/test-results, when: always}
     - run: {command: "coverage combine\ncoverage html -d out/coverage\ncoverage xml\n",
@@ -45,7 +45,7 @@ jobs:
   test-3.8-staging:
     docker:
     - {image: python:3.8}
-    environment: {COLUMNS: '160', COVER_PACKAGES: 'system_cmd_tests,system_cmd.interface,system_cmd.structures,system_cmd,system_cmd.which,system_cmd.utils,system_cmd.test_one,system_cmd.meat',
+    environment: {COLUMNS: '160', COVER_PACKAGES: 'system_cmd_tests,system_cmd.meat,system_cmd.utils,system_cmd,system_cmd.which,system_cmd.interface,system_cmd.test_one,system_cmd.structures',
       PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin,
       TEST_PACKAGES: system_cmd_tests}
     steps:
@@ -76,7 +76,7 @@ jobs:
           \n#              --processes=8 --process-timeout=1000 --process-restartworker\
           \ \\\n# --cover-packages=${COVER_PACKAGES} \\\nnosetests \\\n  --rednose\
           \ --immediate \\\n  --cover-tests --with-coverage \\\n  --with-xunitmp --xunitmp-file=${xunit_output}\
-          \ \\\n  --cover-packages=${COVER_PACKAGES} \\\n  ${TEST_PACKAGES}\n", name: Run
+          \ \\\n  --cover-package=${COVER_PACKAGES} \\\n  ${TEST_PACKAGES}\n", name: Run
           tests}
     - store_test_results: {path: out/test-results, when: always}
     - run: {command: "coverage combine\ncoverage html -d out/coverage\ncoverage xml\n",
@@ -99,4 +99,4 @@ workflows:
           branches: {ignore: /z7-stage.*/}
   version: 2
 
-# sigil 93aa2167dd275f39529e68ebd826519b
+# sigil 5dc8ba74227a1c8996093f2b819fca1c
