@@ -1,4 +1,3 @@
-
 import os
 import subprocess
 import sys
@@ -6,6 +5,7 @@ import tempfile
 from typing import Optional, Union, List, Dict
 
 import six
+
 # from contracts import contract
 
 from . import logger
@@ -13,10 +13,8 @@ from .structures import CmdException, CmdResult
 from .utils import cmd2args, copyable_cmd, indent
 
 
-
-
 __all__ = [
-    'system_cmd_result',
+    "system_cmd_result",
 ]
 
 
@@ -39,22 +37,25 @@ class Shared(object):
 
 
 # @contract(cwd='None|string', cmd='string|list(string)', env='dict|None')
-def system_cmd_result(cwd: Optional[str], cmd: Union[str, List[str]],
-                      display_stdout=False,
-                      display_stderr=False,
-                      raise_on_error=False,
-                      display_prefix=None,  # leave it there
-                      write_stdin='',
-                      capture_keyboard_interrupt=False,
-                      display_stream=sys.stdout,  # @UnusedVariable
-                      env:Optional[Dict[str, str]]=None):
-    '''
-        Returns the structure CmdResult; raises CmdException.
-        Also OSError are captured.
-        KeyboardInterrupt is passed through unless specified
+def system_cmd_result(
+    cwd: Optional[str],
+    cmd: Union[str, List[str]],
+    display_stdout=False,
+    display_stderr=False,
+    raise_on_error=False,
+    display_prefix=None,  # leave it there
+    write_stdin="",
+    capture_keyboard_interrupt=False,
+    display_stream=sys.stdout,  # @UnusedVariable
+    env: Optional[Dict[str, str]] = None,
+):
+    """
+    Returns the structure CmdResult; raises CmdException.
+    Also OSError are captured.
+    KeyboardInterrupt is passed through unless specified
 
-        :param write_stdin: A string to write to the process.
-    '''
+    :param write_stdin: A string to write to the process.
+    """
 
     if env is None:
         env = os.environ.copy()
@@ -78,18 +79,13 @@ def system_cmd_result(cwd: Optional[str], cmd: Union[str, List[str]],
 
         assert isinstance(cmd, list)
         if display_stdout or display_stderr:
-            logger.info('$ %s' % copyable_cmd(cmd))
+            logger.info("$ %s" % copyable_cmd(cmd))
         p = subprocess.Popen(
-                cmd,
-                stdin=subprocess.PIPE,
-                stdout=stdout,
-                stderr=stderr,
-                bufsize=0,
-                cwd=cwd,
-                env=env)
+            cmd, stdin=subprocess.PIPE, stdout=stdout, stderr=stderr, bufsize=0, cwd=cwd, env=env
+        )
         #         set_term_function(p)
 
-        if write_stdin != '':
+        if write_stdin != "":
             p.stdin.write(write_stdin)
             p.stdin.flush()
 
@@ -100,7 +96,7 @@ def system_cmd_result(cwd: Optional[str], cmd: Union[str, List[str]],
         interrupted = False
 
     except KeyboardInterrupt:
-        logger.debug('Keyboard interrupt for:\n %s' % " ".join(cmd))
+        logger.debug("Keyboard interrupt for:\n %s" % " ".join(cmd))
         if capture_keyboard_interrupt:
             ret = 100
             interrupted = True
@@ -128,29 +124,27 @@ def system_cmd_result(cwd: Optional[str], cmd: Union[str, List[str]],
     def decode_one(x):
 
         try:
-            return x.decode('utf-8')
+            return x.decode("utf-8")
         except UnicodeDecodeError as e:
-            msg = 'Cannot decode the output of the command %s' % cmd
-            msg += '\nStream is not valid UTF-8: %s' % e
-            msg += '\nI will read the rest ignoring the errors.'
+            msg = "Cannot decode the output of the command %s" % cmd
+            msg += "\nStream is not valid UTF-8: %s" % e
+            msg += "\nI will read the rest ignoring the errors."
             logger.error(msg)
-            return x.decode('utf-8', errors='ignore')
+            return x.decode("utf-8", errors="ignore")
 
     captured_stdout = decode_one(captured_stdout)
     captured_stderr = decode_one(captured_stderr)
 
     if display_stdout and captured_stdout:
-        s += indent(captured_stdout, 'stdout>') + '\n'
+        s += indent(captured_stdout, "stdout>") + "\n"
 
     if display_stderr and captured_stderr:
-        s += indent(captured_stderr, 'stderr>') + '\n'
+        s += indent(captured_stderr, "stderr>") + "\n"
 
     if s:
         logger.debug(s)
 
-    res = CmdResult(cwd, cmd, ret, rets, interrupted,
-                    stdout=captured_stdout,
-                    stderr=captured_stderr)
+    res = CmdResult(cwd, cmd, ret, rets, interrupted, stdout=captured_stdout, stderr=captured_stderr)
 
     if raise_on_error:
         if res.ret != 0:
@@ -237,8 +231,8 @@ def alternative_nonworking(p, display_stderr, display_stdout, display_prefix):
     """ Returns stdout, stderr """
 
     # p.stdin.close()
-    stderr = ''
-    stdout = ''
+    stderr = ""
+    stdout = ""
     stderr_lines = []
     stdout_lines = []
     stderr_to_read = True
@@ -270,13 +264,13 @@ def alternative_nonworking(p, display_stderr, display_stdout, display_prefix):
             l = stderr_lines.pop(0)
             stderr += l
             if display_stderr:
-                sys.stderr.write('%s ! %s' % (display_prefix, l))
+                sys.stderr.write("%s ! %s" % (display_prefix, l))
 
         while stdout_lines:
             l = stdout_lines.pop(0)
             stdout += l
             if display_stdout:
-                sys.stderr.write('%s   %s' % (display_prefix, l))
+                sys.stderr.write("%s   %s" % (display_prefix, l))
 
     stdout = p.stdout.read()
     return stdout, stderr
