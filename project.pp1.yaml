@@ -11,8 +11,7 @@ install_requires:
 install_conflicts: [ 'SystemCmd*' ]
 tests_require: [ ]
 
-console_scripts:
-  zt-demo: zuper_utils_asyncio:zt_demo
+console_scripts: {}
 nose:
   modules:
     - "*_tests"
