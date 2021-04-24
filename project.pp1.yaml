@@ -1,35 +1,35 @@
 package_name: SystemCmd-z7
 srcdir: src
-version_file: "1"
+version_file: '1'
 modules:
-  - system_cmd
+- system_cmd
 
 install_requires:
-  - PyContracts3
-  - zuper-commons-z7
-  - six
-install_conflicts: [ 'SystemCmd*' ]
-tests_require: [ ]
+- PyContracts3
+- zuper-commons-z7
+- six
+install_conflicts: [SystemCmd*]
+tests_require: []
 
 console_scripts: {}
 nose:
   modules:
-    - "*_tests"
+  - '*_tests'
   python_versions:
-    - '3.7'
-    - '3.8'
+  - '3.7'
+  - '3.8'
 
 pypi:
-  upload: [ ]
+  upload: []
 
 circleci:
   active: true
-  test_python_versions: [ '3.8' ]
+  test_python_versions: ['3.7', '3.8']
 
 python_syntax_version: '3.8'
 
 url: https://github.com/zupermind/PACKAGENAME
 author: ''
-author_email: 'info@zupermind.com'
+author_email: info@zupermind.com
 short_description: ''
 full_description: ''
