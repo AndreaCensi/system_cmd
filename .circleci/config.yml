@@ -110,8 +110,8 @@ jobs:
     - run:
         name: system_cmd_tests
         command: |-
-          set -ex
-          mkdir -p out/test-results;
+          set -euxo pipefail
+          mkdir -p out/test-results
           xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
           nosetests \
               --rednose --immediate \
@@ -245,8 +245,8 @@ jobs:
     - run:
         name: system_cmd_tests
         command: |-
-          set -ex
-          mkdir -p out/test-results;
+          set -euxo pipefail
+          mkdir -p out/test-results
           xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
           nosetests \
               --rednose --immediate \
@@ -380,8 +380,8 @@ jobs:
     - run:
         name: system_cmd_tests
         command: |-
-          set -ex
-          mkdir -p out/test-results;
+          set -euxo pipefail
+          mkdir -p out/test-results
           xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
           nosetests \
               --rednose --immediate \
@@ -515,8 +515,8 @@ jobs:
     - run:
         name: system_cmd_tests
         command: |-
-          set -ex
-          mkdir -p out/test-results;
+          set -euxo pipefail
+          mkdir -p out/test-results
           xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
           nosetests \
               --rednose --immediate \
@@ -565,4 +565,4 @@ jobs:
           bash <(curl -s https://codecov.io/bash)
     resource_class: medium+
 
-# sigil 265f30cb86ba268f6c66fe506eed3a88
+# sigil dec33cecfe6d1a7b856611aa36d4e2e6
