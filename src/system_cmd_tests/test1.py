@@ -1,2 +1,4 @@
 def test0():
-    pass
+    from system_cmd import __version__
+
+    return __version__
