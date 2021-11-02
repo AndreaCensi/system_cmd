@@ -228,7 +228,7 @@ def remove_empty_lines(s):
 
 
 def alternative_nonworking(p, display_stderr, display_stdout, display_prefix):
-    """ Returns stdout, stderr """
+    """Returns stdout, stderr"""
 
     # p.stdin.close()
     stderr = ""

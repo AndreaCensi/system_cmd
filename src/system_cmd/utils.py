@@ -5,7 +5,7 @@ import six
 
 
 def cmd2args(s):
-    """ if s is a list, leave it like that; otherwise split()"""
+    """if s is a list, leave it like that; otherwise split()"""
     if isinstance(s, list):
         return s
     elif isinstance(s, six.string_types):
@@ -40,7 +40,7 @@ def indent(s, prefix):
 
 # @contract(cmds='list(string)')
 def copyable_cmd(cmds):
-    """ Returns the commands as a copyable string. """
+    """Returns the commands as a copyable string."""
 
     # @contract(x='string')
     def copyable(x):

@@ -6,7 +6,7 @@ __all__ = ["find_executable"]
 
 @contract(returns="str|None")
 def find_executable(program):
-    """ Checks if a program exists. Returns None otherwise """
+    """Checks if a program exists. Returns None otherwise"""
 
     import os
 
