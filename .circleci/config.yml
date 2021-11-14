@@ -31,8 +31,8 @@ jobs:
       COLUMNS: '160'
       # default is /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      COVER_PACKAGES: system_cmd,system_cmd_tests
-      TEST_PACKAGES: system_cmd_tests
+      COVER_PACKAGES: system_cmd,system_cmd_tests,system_cmd_tests.test1,system_cmd_tests.test_one
+      TEST_PACKAGES: system_cmd_tests system_cmd_tests system_cmd_tests
     docker:
     - image: ${DOCKER_REGISTRY}/zupermind/zuper-ci-3.8:z7
       auth:
@@ -120,6 +120,32 @@ jobs:
     #       make -C notebooks cleanup all
 
 
+    - run:
+        name: system_cmd_tests
+        command: |-
+          set -euxo pipefail
+          mkdir -p out/test-results
+          xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
+          nosetests \
+              --rednose --immediate \
+              --cover-tests --with-coverage \
+              --with-xunit --xunit-file=${xunit_output} \
+              --cover-package=${COVER_PACKAGES} \
+              system_cmd_tests
+        when: always
+    - run:
+        name: system_cmd_tests
+        command: |-
+          set -euxo pipefail
+          mkdir -p out/test-results
+          xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
+          nosetests \
+              --rednose --immediate \
+              --cover-tests --with-coverage \
+              --with-xunit --xunit-file=${xunit_output} \
+              --cover-package=${COVER_PACKAGES} \
+              system_cmd_tests
+        when: always
     - run:
         name: system_cmd_tests
         command: |-
@@ -173,8 +199,8 @@ jobs:
       COLUMNS: '160'
       # default is /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      COVER_PACKAGES: system_cmd,system_cmd_tests
-      TEST_PACKAGES: system_cmd_tests
+      COVER_PACKAGES: system_cmd,system_cmd_tests,system_cmd_tests.test1,system_cmd_tests.test_one
+      TEST_PACKAGES: system_cmd_tests system_cmd_tests system_cmd_tests
     docker:
     - image: ${DOCKER_REGISTRY}/zupermind/zuper-ci-3.8:z7
       auth:
@@ -276,6 +302,32 @@ jobs:
               system_cmd_tests
         when: always
     - run:
+        name: system_cmd_tests
+        command: |-
+          set -euxo pipefail
+          mkdir -p out/test-results
+          xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
+          nosetests \
+              --rednose --immediate \
+              --cover-tests --with-coverage \
+              --with-xunit --xunit-file=${xunit_output} \
+              --cover-package=${COVER_PACKAGES} \
+              system_cmd_tests
+        when: always
+    - run:
+        name: system_cmd_tests
+        command: |-
+          set -euxo pipefail
+          mkdir -p out/test-results
+          xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
+          nosetests \
+              --rednose --immediate \
+              --cover-tests --with-coverage \
+              --with-xunit --xunit-file=${xunit_output} \
+              --cover-package=${COVER_PACKAGES} \
+              system_cmd_tests
+        when: always
+    - run:
         name: post-circle-tests
         command: |
           TARGET=post-circle-tests
@@ -315,8 +367,8 @@ jobs:
       COLUMNS: '160'
       # default is /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      COVER_PACKAGES: system_cmd,system_cmd_tests
-      TEST_PACKAGES: system_cmd_tests
+      COVER_PACKAGES: system_cmd,system_cmd_tests,system_cmd_tests.test1,system_cmd_tests.test_one
+      TEST_PACKAGES: system_cmd_tests system_cmd_tests system_cmd_tests
     docker:
     - image: ${DOCKER_REGISTRY}/zupermind/zuper-ci-3.9:z7
       auth:
@@ -404,6 +456,32 @@ jobs:
     #       make -C notebooks cleanup all
 
 
+    - run:
+        name: system_cmd_tests
+        command: |-
+          set -euxo pipefail
+          mkdir -p out/test-results
+          xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
+          nosetests \
+              --rednose --immediate \
+              --cover-tests --with-coverage \
+              --with-xunit --xunit-file=${xunit_output} \
+              --cover-package=${COVER_PACKAGES} \
+              system_cmd_tests
+        when: always
+    - run:
+        name: system_cmd_tests
+        command: |-
+          set -euxo pipefail
+          mkdir -p out/test-results
+          xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
+          nosetests \
+              --rednose --immediate \
+              --cover-tests --with-coverage \
+              --with-xunit --xunit-file=${xunit_output} \
+              --cover-package=${COVER_PACKAGES} \
+              system_cmd_tests
+        when: always
     - run:
         name: system_cmd_tests
         command: |-
@@ -457,8 +535,8 @@ jobs:
       COLUMNS: '160'
       # default is /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      COVER_PACKAGES: system_cmd,system_cmd_tests
-      TEST_PACKAGES: system_cmd_tests
+      COVER_PACKAGES: system_cmd,system_cmd_tests,system_cmd_tests.test1,system_cmd_tests.test_one
+      TEST_PACKAGES: system_cmd_tests system_cmd_tests system_cmd_tests
     docker:
     - image: ${DOCKER_REGISTRY}/zupermind/zuper-ci-3.9:z7
       auth:
@@ -560,6 +638,32 @@ jobs:
               system_cmd_tests
         when: always
     - run:
+        name: system_cmd_tests
+        command: |-
+          set -euxo pipefail
+          mkdir -p out/test-results
+          xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
+          nosetests \
+              --rednose --immediate \
+              --cover-tests --with-coverage \
+              --with-xunit --xunit-file=${xunit_output} \
+              --cover-package=${COVER_PACKAGES} \
+              system_cmd_tests
+        when: always
+    - run:
+        name: system_cmd_tests
+        command: |-
+          set -euxo pipefail
+          mkdir -p out/test-results
+          xunit_output=$PWD/out/test-results/nose-${CIRCLE_NODE_INDEX}-system_cmd_tests-xunit.xml
+          nosetests \
+              --rednose --immediate \
+              --cover-tests --with-coverage \
+              --with-xunit --xunit-file=${xunit_output} \
+              --cover-package=${COVER_PACKAGES} \
+              system_cmd_tests
+        when: always
+    - run:
         name: post-circle-tests
         command: |
           TARGET=post-circle-tests
@@ -595,4 +699,4 @@ jobs:
           bash <(curl -s https://codecov.io/bash)
     resource_class: medium
 
-# sigil adb93f587138ba8531a04fa59ef1586d
+# sigil ad02107dbf3fef9c82532f76979f96ff
