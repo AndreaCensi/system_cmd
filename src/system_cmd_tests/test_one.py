@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from system_cmd import system_cmd_result
 
 

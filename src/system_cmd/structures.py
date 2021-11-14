@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+
 from .utils import indent
 
 __all__ = [
@@ -18,7 +19,7 @@ class CmdResult(object):
         self.interrupted = interrupted
 
     def __str__(self):
-        from system_cmd.utils import copyable_cmd
+        from .utils import copyable_cmd
 
         msg = "The command: %s\n" "     in dir: %s\n" % (copyable_cmd(self.cmd), self.cwd)
 
