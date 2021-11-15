@@ -31,7 +31,7 @@ jobs:
       COLUMNS: '160'
       # default is /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      COVER_PACKAGES: system_cmd,system_cmd_tests,system_cmd_tests.test1,system_cmd_tests.test_one
+      COVER_PACKAGES: system_cmd,system_cmd_tests
       TEST_PACKAGES: system_cmd_tests
     docker:
     - image: ${DOCKER_REGISTRY}/zupermind/zuper-ci-3.8:z7
@@ -171,7 +171,7 @@ jobs:
       COLUMNS: '160'
       # default is /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      COVER_PACKAGES: system_cmd,system_cmd_tests,system_cmd_tests.test1,system_cmd_tests.test_one
+      COVER_PACKAGES: system_cmd,system_cmd_tests
       TEST_PACKAGES: system_cmd_tests
     docker:
     - image: ${DOCKER_REGISTRY}/zupermind/zuper-ci-3.8:z7
@@ -311,7 +311,7 @@ jobs:
       COLUMNS: '160'
       # default is /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      COVER_PACKAGES: system_cmd,system_cmd_tests,system_cmd_tests.test1,system_cmd_tests.test_one
+      COVER_PACKAGES: system_cmd,system_cmd_tests
       TEST_PACKAGES: system_cmd_tests
     docker:
     - image: ${DOCKER_REGISTRY}/zupermind/zuper-ci-3.9:z7
@@ -451,7 +451,7 @@ jobs:
       COLUMNS: '160'
       # default is /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       PATH: /root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      COVER_PACKAGES: system_cmd,system_cmd_tests,system_cmd_tests.test1,system_cmd_tests.test_one
+      COVER_PACKAGES: system_cmd,system_cmd_tests
       TEST_PACKAGES: system_cmd_tests
     docker:
     - image: ${DOCKER_REGISTRY}/zupermind/zuper-ci-3.9:z7
@@ -587,4 +587,4 @@ jobs:
           bash <(curl -s https://codecov.io/bash)
     resource_class: medium
 
-# sigil 7c6e4fd381173c51333d70f3e275ddeb
+# sigil 04b6ec4fa5d06ca79762cc854d624d32
