@@ -2,6 +2,7 @@
 import six
 
 # from contracts import contract
+from zuper_commons.text import joinlines
 
 
 def cmd2args(s):
@@ -33,9 +34,9 @@ def result_format(cwd, cmd, ret, stdout=None, stderr=None):
 
 
 def indent(s, prefix):
-    lines = s.split("\n")
+    lines = s.splitlines()
     lines = ["%s%s" % (prefix, line.rstrip()) for line in lines]
-    return "\n".join(lines)
+    return joinlines(lines)
 
 
 # @contract(cmds='list(string)')
