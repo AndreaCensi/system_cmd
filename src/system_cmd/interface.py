@@ -2,8 +2,8 @@ from __future__ import unicode_literals
 from .meat import system_cmd_result
 
 __all__ = [
-    "system_cmd_show",
     "system_cmd",
+    "system_cmd_show",
     "system_run",
 ]
 

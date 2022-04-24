@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 from .utils import indent
 
 __all__ = [
-    "CmdResult",
     "CmdException",
+    "CmdResult",
 ]
 
 
