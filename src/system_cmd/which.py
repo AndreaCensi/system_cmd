@@ -1,7 +1,9 @@
 from __future__ import unicode_literals
 from contracts import contract
 
-__all__ = ["find_executable"]
+__all__ = [
+    "find_executable",
+]
 
 
 @contract(returns="str|None")
