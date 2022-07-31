@@ -8,7 +8,6 @@ modules:
 install_requires:
 - PyContracts3
 - zuper-commons-z7
-- six
 
 tests_require: []
 

@@ -1,7 +1,6 @@
 {
   "install_requires": [
     "PyContracts3",
-    "six",
     "zuper-commons-z7"
   ],
   "tests_require": [],
