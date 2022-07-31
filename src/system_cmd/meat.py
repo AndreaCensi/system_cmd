@@ -2,15 +2,13 @@ import os
 import subprocess
 import sys
 import tempfile
-from typing import Optional, Union, List, Dict
-
-import six
-
-# from contracts import contract
+from typing import Dict, List, Optional, Union
 
 from . import logger
 from .structures import CmdException, CmdResult
 from .utils import cmd2args, copyable_cmd, indent
+
+# from contracts import contract
 
 __all__ = [
     "system_cmd_result",

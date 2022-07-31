@@ -1,7 +1,3 @@
-# from __future__ import unicode_literals
-import six
-
-# from contracts import contract
 from zuper_commons.text import joinlines
 
 
