@@ -9,7 +9,7 @@ def cmd2args(s):
     """if s is a list, leave it like that; otherwise split()"""
     if isinstance(s, list):
         return s
-    elif isinstance(s, six.string_types):
+    elif isinstance(s, str):
         return s.split()
     else:
         assert False

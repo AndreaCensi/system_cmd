@@ -12,7 +12,6 @@ from . import logger
 from .structures import CmdException, CmdResult
 from .utils import cmd2args, copyable_cmd, indent
 
-
 __all__ = [
     "system_cmd_result",
 ]
@@ -74,7 +73,7 @@ def system_cmd_result(
         stdout = tmp_stdout.fileno()
         # stderr = None if display_stderr else
         stderr = tmp_stderr.fileno()
-        if isinstance(cmd, six.string_types):
+        if isinstance(cmd, str):
             cmd = cmd2args(cmd)
 
         assert isinstance(cmd, list)
