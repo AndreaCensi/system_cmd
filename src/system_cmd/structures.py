@@ -8,7 +8,7 @@ __all__ = [
 ]
 
 
-class CmdResult(object):
+class CmdResult:
     def __init__(self, cwd, cmd, ret, rets, interrupted, stdout, stderr):
         self.cwd = cwd
         self.cmd = cmd
@@ -37,6 +37,8 @@ class CmdResult(object):
 
 
 class CmdException(Exception):
-    def __init__(self, cmd_result):
+    res: CmdResult
+
+    def __init__(self, cmd_result: CmdResult):
         Exception.__init__(self, str(cmd_result))
         self.res = cmd_result
