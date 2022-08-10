@@ -35,7 +35,7 @@ __all__ = [
 # @contract(cwd='None|string', cmd='string|list(string)', env='dict|None')
 def system_cmd_result(
     cwd: Optional[DirPath],
-    cmd0: Union[str, List[str]],
+    cmd: Union[str, List[str]],
     display_stdout: bool = False,
     display_stderr: bool = False,
     raise_on_error: bool = False,
@@ -58,7 +58,7 @@ def system_cmd_result(
 
     tmp_stdout = tempfile.TemporaryFile()
     tmp_stderr = tempfile.TemporaryFile()
-    cmd = cmd2args(cmd0)
+    cmd1 = cmd2args(cmd)
 
     # ret = None
     rets = None
@@ -72,11 +72,11 @@ def system_cmd_result(
         # stderr = None if display_stderr else
         stderr = tmp_stderr.fileno()
 
-        assert isinstance(cmd, list)
+        assert isinstance(cmd1, list)
         if display_stdout or display_stderr:
-            logger.info("$ %s" % copyable_cmd(cmd))
+            logger.info("$ %s" % copyable_cmd(cmd1))
         p = subprocess.Popen(
-            cmd, stdin=subprocess.PIPE, stdout=stdout, stderr=stderr, bufsize=0, cwd=cwd, env=env
+            cmd1, stdin=subprocess.PIPE, stdout=stdout, stderr=stderr, bufsize=0, cwd=cwd, env=env
         )
         #         set_term_function(p)
         stdin = p.stdin
@@ -92,7 +92,7 @@ def system_cmd_result(
         interrupted = False
 
     except KeyboardInterrupt:
-        logger.debug("Keyboard interrupt for:\n %s" % " ".join(cmd))
+        logger.debug("Keyboard interrupt for:\n %s" % " ".join(cmd1))
         if capture_keyboard_interrupt:
             ret = 100
             interrupted = True
@@ -121,7 +121,7 @@ def system_cmd_result(
         try:
             return x.decode("utf-8")
         except UnicodeDecodeError as e:
-            msg = "Cannot decode the output of the command %s" % cmd
+            msg = "Cannot decode the output of the command %s" % cmd1
             msg += "\nStream is not valid UTF-8: %s" % e
             msg += "\nI will read the rest ignoring the errors."
             logger.error(msg)
@@ -139,7 +139,7 @@ def system_cmd_result(
     if s:
         logger.debug(s)
 
-    res = CmdResult(cwd, cmd, ret, rets, interrupted, stdout=captured_stdout, stderr=captured_stderr)
+    res = CmdResult(cwd, cmd1, ret, rets, interrupted, stdout=captured_stdout, stderr=captured_stderr)
 
     if raise_on_error:
         if res.ret != 0:
