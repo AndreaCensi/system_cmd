@@ -6,7 +6,6 @@ modules:
 - system_cmd
 
 install_requires:
-- PyContracts3
 - zuper-commons-z7
 
 tests_require: []
