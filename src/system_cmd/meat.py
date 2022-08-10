@@ -2,21 +2,20 @@ import os
 import subprocess
 import sys
 import tempfile
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, IO, List, Optional, Union
 
+from zuper_commons.fs import DirPath
 from . import logger
 from .structures import CmdException, CmdResult
 from .utils import cmd2args, copyable_cmd, indent
-
-# from contracts import contract
 
 __all__ = [
     "system_cmd_result",
 ]
 
 
-class Shared(object):
-    p = None
+# class Shared:
+#     p = None
 
 
 #
@@ -35,23 +34,23 @@ class Shared(object):
 
 # @contract(cwd='None|string', cmd='string|list(string)', env='dict|None')
 def system_cmd_result(
-    cwd: Optional[str],
-    cmd: Union[str, List[str]],
-    display_stdout=False,
-    display_stderr=False,
-    raise_on_error=False,
-    display_prefix=None,  # leave it there
-    write_stdin="",
-    capture_keyboard_interrupt=False,
-    display_stream=sys.stdout,  # @UnusedVariable
+    cwd: Optional[DirPath],
+    cmd0: Union[str, List[str]],
+    display_stdout: bool = False,
+    display_stderr: bool = False,
+    raise_on_error: bool = False,
+    display_prefix: Optional[str] = None,  # leave it there
+    write_stdin: bytes = b"",
+    capture_keyboard_interrupt: bool = False,
+    display_stream: Any = sys.stdout,  # @UnusedVariable
     env: Optional[Dict[str, str]] = None,
-):
+) -> CmdResult:
     """
     Returns the structure CmdResult; raises CmdException.
     Also OSError are captured.
     KeyboardInterrupt is passed through unless specified
 
-    :param write_stdin: A string to write to the process.
+    write_stdin: A string to write to the process.
     """
 
     if env is None:
@@ -59,10 +58,11 @@ def system_cmd_result(
 
     tmp_stdout = tempfile.TemporaryFile()
     tmp_stderr = tempfile.TemporaryFile()
+    cmd = cmd2args(cmd0)
 
-    ret = None
+    # ret = None
     rets = None
-    interrupted = False
+    # interrupted = False
 
     #     if (display_stdout and captured_stdout) or (display_stderr and captured_stderr):
 
@@ -71,8 +71,6 @@ def system_cmd_result(
         stdout = tmp_stdout.fileno()
         # stderr = None if display_stderr else
         stderr = tmp_stderr.fileno()
-        if isinstance(cmd, str):
-            cmd = cmd2args(cmd)
 
         assert isinstance(cmd, list)
         if display_stdout or display_stderr:
@@ -81,12 +79,13 @@ def system_cmd_result(
             cmd, stdin=subprocess.PIPE, stdout=stdout, stderr=stderr, bufsize=0, cwd=cwd, env=env
         )
         #         set_term_function(p)
+        stdin = p.stdin
+        assert stdin is not None
+        if write_stdin:
+            stdin.write(write_stdin)
+            stdin.flush()
 
-        if write_stdin != "":
-            p.stdin.write(write_stdin)
-            p.stdin.flush()
-
-        p.stdin.close()
+        stdin.close()
         p.wait()
         ret = p.returncode
         rets = None
@@ -105,20 +104,19 @@ def system_cmd_result(
         rets = str(e)
 
     # remember to go back
-    def read_all(f) -> bytes:
+    def read_all(f: IO[bytes]) -> bytes:
         os.lseek(f.fileno(), 0, 0)
         return f.read().strip()
 
-    captured_stdout = read_all(tmp_stdout).strip()
-    captured_stderr = read_all(tmp_stderr).strip()
+    captured_stdout_b: bytes = read_all(tmp_stdout).strip()
+    captured_stderr_b: bytes = read_all(tmp_stderr).strip()
 
     s = ""
 
     # captured_stdout = remove_empty_lines(captured_stdout)
     # captured_stderr = remove_empty_lines(captured_stderr)
 
-    # if six.PY3:
-    def decode_one(x):
+    def decode_one(x: bytes) -> str:
 
         try:
             return x.decode("utf-8")
@@ -129,8 +127,8 @@ def system_cmd_result(
             logger.error(msg)
             return x.decode("utf-8", errors="ignore")
 
-    captured_stdout = decode_one(captured_stdout)
-    captured_stderr = decode_one(captured_stderr)
+    captured_stdout = decode_one(captured_stdout_b)
+    captured_stderr = decode_one(captured_stderr_b)
 
     if display_stdout and captured_stdout:
         s += indent(captured_stdout, "stdout>") + "\n"
@@ -150,7 +148,7 @@ def system_cmd_result(
     return res
 
 
-def remove_empty_lines(s):
+def remove_empty_lines(s: bytes) -> bytes:
     lines = s.split(b"\n")
     empty = lambda line: len(line.strip()) == 0
     lines = [l for l in lines if not empty(l)]
@@ -223,51 +221,51 @@ def remove_empty_lines(s):
 #
 #     return res
 
-
-def alternative_nonworking(p, display_stderr, display_stdout, display_prefix):
-    """Returns stdout, stderr"""
-
-    # p.stdin.close()
-    stderr = ""
-    stdout = ""
-    stderr_lines = []
-    stdout_lines = []
-    stderr_to_read = True
-    stdout_to_read = True
-
-    def read_stream(stream, lines):
-        if stream:
-            nexti = stream.readline()
-            if not nexti:
-                stream.close()
-                return False
-            lines.append(nexti)
-            return True
-        else:
-            stream.close()
-            return False
-
-    # XXX: read all the lines
-    while stderr_to_read or stdout_to_read:
-
-        if stderr_to_read:
-            stderr_to_read = read_stream(p.stderr, stderr_lines)
-        #             stdout_to_read = False
-
-        if stdout_to_read:
-            stdout_to_read = read_stream(p.stdout, stdout_lines)
-
-        while stderr_lines:
-            l = stderr_lines.pop(0)
-            stderr += l
-            if display_stderr:
-                sys.stderr.write("%s ! %s" % (display_prefix, l))
-
-        while stdout_lines:
-            l = stdout_lines.pop(0)
-            stdout += l
-            if display_stdout:
-                sys.stderr.write("%s   %s" % (display_prefix, l))
-
-    stdout = p.stdout.read()
-    return stdout, stderr
+#
+# def alternative_nonworking(p, display_stderr, display_stdout, display_prefix):
+#     """Returns stdout, stderr"""
+#
+#     # p.stdin.close()
+#     stderr = ""
+#     stdout = ""
+#     stderr_lines = []
+#     stdout_lines = []
+#     stderr_to_read = True
+#     stdout_to_read = True
+#
+#     def read_stream(stream, lines):
+#         if stream:
+#             nexti = stream.readline()
+#             if not nexti:
+#                 stream.close()
+#                 return False
+#             lines.append(nexti)
+#             return True
+#         else:
+#             stream.close()
+#             return False
+#
+#     # XXX: read all the lines
+#     while stderr_to_read or stdout_to_read:
+#
+#         if stderr_to_read:
+#             stderr_to_read = read_stream(p.stderr, stderr_lines)
+#         #             stdout_to_read = False
+#
+#         if stdout_to_read:
+#             stdout_to_read = read_stream(p.stdout, stdout_lines)
+#
+#         while stderr_lines:
+#             l = stderr_lines.pop(0)
+#             stderr += l
+#             if display_stderr:
+#                 sys.stderr.write("%s ! %s" % (display_prefix, l))
+#
+#         while stdout_lines:
+#             l = stdout_lines.pop(0)
+#             stdout += l
+#             if display_stdout:
+#                 sys.stderr.write("%s   %s" % (display_prefix, l))
+#
+#     stdout = p.stdout.read()
+#     return stdout, stderr

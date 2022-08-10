@@ -1,5 +1,8 @@
 from __future__ import unicode_literals
 
+from typing import List, Optional
+
+from zuper_commons.fs import DirPath
 from .utils import indent
 
 __all__ = [
@@ -9,7 +12,16 @@ __all__ = [
 
 
 class CmdResult:
-    def __init__(self, cwd, cmd, ret, rets, interrupted, stdout, stderr):
+    def __init__(
+        self,
+        cwd: Optional[DirPath],
+        cmd: List[str],
+        ret: int,
+        rets: Optional[str],
+        interrupted: bool,
+        stdout: str,
+        stderr: str,
+    ):
         self.cwd = cwd
         self.cmd = cmd
         self.ret = ret
@@ -18,7 +30,7 @@ class CmdResult:
         self.stderr = stderr
         self.interrupted = interrupted
 
-    def __str__(self):
+    def __str__(self) -> str:
         from .utils import copyable_cmd
 
         msg = "The command: %s\n" "     in dir: %s\n" % (copyable_cmd(self.cmd), self.cwd)

@@ -1,19 +1,13 @@
-from __future__ import unicode_literals
-from contracts import contract
+import os
+from typing import Optional
 
 __all__ = [
     "find_executable",
 ]
 
 
-@contract(returns="str|None")
-def find_executable(program):
+def find_executable(program: str) -> Optional[str]:
     """Checks if a program exists. Returns None otherwise"""
-
-    import os
-
-    def is_exe(fpath):
-        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
     fpath, _fname = os.path.split(program)
     if fpath:
@@ -27,3 +21,7 @@ def find_executable(program):
                 return exe_file
 
     return None
+
+
+def is_exe(fpath: str) -> bool:
+    return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
