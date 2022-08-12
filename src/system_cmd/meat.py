@@ -150,9 +150,12 @@ def system_cmd_result(
 
 def remove_empty_lines(s: bytes) -> bytes:
     lines = s.split(b"\n")
-    empty = lambda line: len(line.strip()) == 0
-    lines = [l for l in lines if not empty(l)]
+    lines = [l for l in lines if not is_empty(l)]
     return b"\n".join(lines)
+
+
+def is_empty(line: bytes) -> bool:
+    return len(line.strip()) == 0
 
 
 #
