@@ -10,7 +10,10 @@
   },
   "zip_safe": true,
   "include_package_data": true,
-  "modules": [
+  "packages": [
+    "system_cmd"
+  ],
+  "py_modules": [
     "system_cmd",
     "system_cmd.interface",
     "system_cmd.meat",
