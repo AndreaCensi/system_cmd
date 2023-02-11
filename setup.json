@@ -10,8 +10,16 @@
   },
   "zip_safe": true,
   "include_package_data": true,
-  "modules": [
+  "packages": [
     "system_cmd"
+  ],
+  "py_modules": [
+    "system_cmd",
+    "system_cmd.interface",
+    "system_cmd.meat",
+    "system_cmd.structures",
+    "system_cmd.utils",
+    "system_cmd.which"
   ],
   "version": "7.2",
   "author": "Andrea Censi",
