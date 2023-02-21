@@ -11,7 +11,7 @@ def cmd2args(s: Union[str, List[str]]) -> List[str]:
     elif isinstance(s, str):
         return s.split()
     else:
-        assert False
+        raise AssertionError(s)
 
 
 def wrap(header: str, s: str, N: int = 30) -> str:
