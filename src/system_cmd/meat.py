@@ -117,7 +117,6 @@ def system_cmd_result(
     # captured_stderr = remove_empty_lines(captured_stderr)
 
     def decode_one(x: bytes) -> str:
-
         try:
             return x.decode("utf-8")
         except UnicodeDecodeError as e2:
