@@ -75,9 +75,7 @@ def system_cmd_result(
         assert isinstance(cmd1, list)
         if display_stdout or display_stderr:
             logger.info("$ %s" % copyable_cmd(cmd1))
-        p = subprocess.Popen(
-            cmd1, stdin=subprocess.PIPE, stdout=stdout, stderr=stderr, bufsize=0, cwd=cwd, env=env
-        )
+        p = subprocess.Popen(cmd1, stdin=subprocess.PIPE, stdout=stdout, stderr=stderr, bufsize=0, cwd=cwd, env=env)
         #         set_term_function(p)
         stdin = p.stdin
         assert stdin is not None
