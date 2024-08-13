@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from typing import List, Optional, Union
 
 from zuper_commons.fs import DirPath
@@ -24,6 +22,6 @@ def system_cmd(cwd: Optional[DirPath], cmd: Union[str, List[str]]) -> int:
 
 
 def system_run(cwd: Optional[DirPath], cmd: Union[str, List[str]]) -> str:
-    """Gets the stdout of a command,  raise exception if it failes"""
+    """Gets the stdout of a command, raise exception if it fails."""
     res = system_cmd_result(cwd, cmd, display_stdout=False, display_stderr=False, raise_on_error=True)
     return res.stdout

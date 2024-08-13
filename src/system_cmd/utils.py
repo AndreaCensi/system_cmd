@@ -1,10 +1,10 @@
-from typing import List, Optional, Union
+from typing import Optional
 
 from zuper_commons.fs import DirPath
 from zuper_commons.text import joinlines
 
 
-def cmd2args(s: Union[str, List[str]]) -> List[str]:
+def cmd2args(s: str | list[str]) -> list[str]:
     """if s is a list, leave it like that; otherwise split()"""
     if isinstance(s, list):
         return s
@@ -23,7 +23,7 @@ def wrap(header: str, s: str, N: int = 30) -> str:
 
 def result_format(
     cwd: Optional[DirPath],
-    cmd: List[str],
+    cmd: list[str],
     ret: int,
     stdout: Optional[str] = None,
     stderr: Optional[str] = None,
@@ -42,7 +42,7 @@ def indent(s: str, prefix: str) -> str:
     return joinlines(lines)
 
 
-def copyable_cmd(cmds: List[str]) -> str:
+def copyable_cmd(cmds: list[str]) -> str:
     """Returns the commands as a copyable string."""
 
     return " ".join(map(copyable, cmds))

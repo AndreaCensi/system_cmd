@@ -1,6 +1,4 @@
-from __future__ import unicode_literals
-
-from typing import List, Optional
+from typing import Optional
 
 from zuper_commons.fs import DirPath
 from .utils import indent
@@ -15,7 +13,7 @@ class CmdResult:
     def __init__(
         self,
         cwd: Optional[DirPath],
-        cmd: List[str],
+        cmd: list[str],
         ret: int,
         rets: Optional[str],
         interrupted: bool,
