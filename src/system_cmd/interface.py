@@ -10,18 +10,18 @@ __all__ = [
 ]
 
 
-def system_cmd_show(cwd: Optional[DirPath], cmd: Union[str, List[str]]) -> None:
+def system_cmd_show(cwd: Optional[DirPath], cmd: Union[str, list[str]]) -> None:
     """Display command, raise exception."""
     system_cmd_result(cwd, cmd, display_stdout=True, display_stderr=True, raise_on_error=True)
 
 
-def system_cmd(cwd: Optional[DirPath], cmd: Union[str, List[str]]) -> int:
+def system_cmd(cwd: Optional[DirPath], cmd: Union[str, list[str]]) -> int:
     """Do not output; return value."""
     res = system_cmd_result(cwd, cmd, display_stdout=False, display_stderr=False, raise_on_error=False)
     return res.ret
 
 
-def system_run(cwd: Optional[DirPath], cmd: Union[str, List[str]]) -> str:
+def system_run(cwd: Optional[DirPath], cmd: Union[str, list[str]]) -> str:
     """Gets the stdout of a command, raise exception if it fails."""
     res = system_cmd_result(cwd, cmd, display_stdout=False, display_stderr=False, raise_on_error=True)
     return res.stdout

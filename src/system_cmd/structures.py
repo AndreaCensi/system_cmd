@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Optional
 
 from zuper_commons.fs import DirPath
@@ -9,24 +10,15 @@ __all__ = [
 ]
 
 
+@dataclass
 class CmdResult:
-    def __init__(
-        self,
-        cwd: Optional[DirPath],
-        cmd: list[str],
-        ret: int,
-        rets: Optional[str],
-        interrupted: bool,
-        stdout: str,
-        stderr: str,
-    ):
-        self.cwd = cwd
-        self.cmd = cmd
-        self.ret = ret
-        self.rets = rets
-        self.stdout = stdout
-        self.stderr = stderr
-        self.interrupted = interrupted
+    cwd: Optional[DirPath]
+    cmd: list[str]
+    ret: int
+    rets: Optional[str]
+    interrupted: bool
+    stdout: str
+    stderr: str
 
     def __str__(self) -> str:
         from .utils import copyable_cmd
