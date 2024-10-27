@@ -2,7 +2,7 @@ import os
 import subprocess
 import sys
 import tempfile
-from typing import Any, IO, Optional
+from typing import Any, IO
 
 from zuper_commons.fs import DirPath
 from . import logger
@@ -15,16 +15,16 @@ __all__ = [
 
 
 def system_cmd_result(
-    cwd: Optional[DirPath],
+    cwd: DirPath | None,
     cmd: str | list[str],
     display_stdout: bool = False,
     display_stderr: bool = False,
     raise_on_error: bool = False,
-    display_prefix: Optional[str] = None,  # leave it there
+    display_prefix: str | None = None,  # leave it there
     write_stdin: bytes = b"",
     capture_keyboard_interrupt: bool = False,
     display_stream: Any = sys.stdout,
-    env: Optional[dict[str, str]] = None,
+    env: dict[str, str] | None = None,
 ) -> CmdResult:
     """
     Returns the structure CmdResult; raises CmdException.

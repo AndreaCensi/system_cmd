@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from zuper_commons.fs import DirPath
 from .utils import indent
@@ -12,10 +11,10 @@ __all__ = [
 
 @dataclass
 class CmdResult:
-    cwd: Optional[DirPath]
+    cwd: DirPath | None
     cmd: list[str]
     ret: int
-    rets: Optional[str]
+    rets: str | None
     interrupted: bool
     stdout: str
     stderr: str

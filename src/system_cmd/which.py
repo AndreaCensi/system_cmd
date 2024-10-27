@@ -1,12 +1,11 @@
 import os
-from typing import Optional
 
 __all__ = [
     "find_executable",
 ]
 
 
-def find_executable(program: str) -> Optional[str]:
+def find_executable(program: str) -> str | None:
     """Checks if a program exists. Returns None otherwise"""
 
     fpath, _fname = os.path.split(program)

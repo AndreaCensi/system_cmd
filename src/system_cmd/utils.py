@@ -1,5 +1,3 @@
-from typing import Optional
-
 from zuper_commons.fs import DirPath
 from zuper_commons.text import joinlines
 
@@ -22,11 +20,11 @@ def wrap(header: str, s: str, N: int = 30) -> str:
 
 
 def result_format(
-    cwd: Optional[DirPath],
+    cwd: DirPath | None,
     cmd: list[str],
     ret: int,
-    stdout: Optional[str] = None,
-    stderr: Optional[str] = None,
+    stdout: str | None = None,
+    stderr: str | None = None,
 ) -> str:
     msg = "Command:\n\t{cmd}\n" "in directory:\n\t{cwd}\nfailed with error {ret}".format(cwd=cwd, cmd=cmd, ret=ret)
     if stdout is not None:
@@ -38,7 +36,7 @@ def result_format(
 
 def indent(s: str, prefix: str) -> str:
     lines = s.splitlines()
-    lines = ["%s%s" % (prefix, line.rstrip()) for line in lines]
+    lines = ["{}{}".format(prefix, line.rstrip()) for line in lines]
     return joinlines(lines)
 
 
