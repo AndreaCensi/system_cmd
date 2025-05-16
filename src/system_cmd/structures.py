@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from zuper_commons.fs import DirPath
+
 from .utils import indent
 
 __all__ = [
@@ -22,7 +23,7 @@ class CmdResult:
     def __str__(self) -> str:
         from .utils import copyable_cmd
 
-        msg = "The command: %s\n" "     in dir: %s\n" % (copyable_cmd(self.cmd), self.cwd)
+        msg = "The command: %s\n     in dir: %s\n" % (copyable_cmd(self.cmd), self.cwd)
 
         if self.interrupted:
             msg += "Was interrupted by the user\n"

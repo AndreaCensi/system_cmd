@@ -2,12 +2,17 @@ import os
 import subprocess
 import sys
 import tempfile
-from typing import Any, IO
+from typing import IO
+from typing import Any
 
 from zuper_commons.fs import DirPath
+
 from . import logger
-from .structures import CmdException, CmdResult
-from .utils import cmd2args, copyable_cmd, indent
+from .structures import CmdException
+from .structures import CmdResult
+from .utils import cmd2args
+from .utils import copyable_cmd
+from .utils import indent
 
 __all__ = [
     "system_cmd_result",

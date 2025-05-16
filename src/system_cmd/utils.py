@@ -26,7 +26,7 @@ def result_format(
     stdout: str | None = None,
     stderr: str | None = None,
 ) -> str:
-    msg = "Command:\n\t{cmd}\n" "in directory:\n\t{cwd}\nfailed with error {ret}".format(cwd=cwd, cmd=cmd, ret=ret)
+    msg = "Command:\n\t{cmd}\nin directory:\n\t{cwd}\nfailed with error {ret}".format(cwd=cwd, cmd=cmd, ret=ret)
     if stdout is not None:
         msg += "\n" + wrap("stdout", stdout)
     if stderr is not None:

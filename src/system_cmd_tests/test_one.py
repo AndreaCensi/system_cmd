@@ -1,7 +1,8 @@
 from typing import cast
 
-from system_cmd import system_cmd_result
 from zuper_commons.fs import DirPath
+
+from system_cmd import system_cmd_result
 
 ROOT = cast(DirPath, ".")
 
