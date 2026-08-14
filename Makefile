@@ -1,34 +1,67 @@
-package=system_cmd
+all:
+	@echo
 
-include pypackage.mk
+out=out
+tested_packages := system_cmd_tests
+deployed_packages := system_cmd
+test_environment := DISABLE_CONTRACTS=1
+
+ifneq ($(filter contracts,$(deployed_packages)),)
+test_environment :=
+endif
+
+.PHONY: all template bump upload black install-deps install-testing-deps test coverage-combine docs
 
 
+template:
+	zuper-cli template
 
 bump:
-	bumpversion patch
-	git push --tags
-	git push --all
+	zuper-cli bump
 
 upload:
-	rm -f dist/*
-	rm -rf src/*.egg-info
-	python3 setup.py sdist
-	devpi use $(TWINE_REPOSITORY_URL)
-	devpi login $(TWINE_USERNAME) --password $(TWINE_PASSWORD)
-	devpi upload --verbose dist/*
+	zuper-cli upload
 
-vulture:
+black:
+	black -l 110 --target-version py312 src
 
+install-deps:
+	pip3 install --user shyaml
+	shyaml get-values install_requires < project.pp1.yaml > .requirements.txt
+	pip3 install --user --upgrade -r .requirements.txt
+	rm .requirements.txt
 
-name=systemcmd-python3
+install-testing-deps:
+	pip3 install --user shyaml
+	shyaml get-values tests_require < project.pp1.yaml > .requirements_tests.txt
+	pip3 install --user --upgrade -r .requirements_tests.txt
+	rm .requirements_tests.txt
 
-test1:
-	docker stop $(name) || true
-	docker rm $(name) || true
+	pip install \
+		pipdeptree\
+		bumpversion\
+		nose2\
+		nose2-html-report\
+		pre-commit\
+		coverage\
+		codecov\
+		sphinx\
+		sphinx-rtd-theme
 
-	docker run -it -v "$(shell realpath $(PWD)):/project" -w /project --name $(name) python:3 /bin/bash
+test:
+	$(test_environment) python -m nose2 -v $(tested_packages)
 
-test1-install:
-	pip install -r requirements.txt
-	pip install nose
-	python setup.py develop --no-deps
+coverage-combine:
+	coverage combine
+
+ifneq (,)
+docs:
+	$(MAKE) -C docs
+else
+docs:
+	sphinx-build src $(out)/docs
+endif
+
+-include extra.mk
+
+# sigil a16b5d0b23166d30d35b3d582930e753
